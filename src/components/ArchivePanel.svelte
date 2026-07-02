@@ -3,12 +3,11 @@ import { onMount } from "svelte";
 
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
+import type { PostForList } from "../utils/content-utils";
 import { getPostUrlBySlug } from "../utils/url-utils";
 
 export let tags: string[] = [];
 export let categories: string[] = [];
-import type { PostForList } from "../utils/content-utils";
-
 export let sortedPosts: PostForList[] = [];
 
 const params = new URLSearchParams(window.location.search);
@@ -34,7 +33,7 @@ function formatTag(tagList: string[]) {
 }
 
 onMount(async () => {
-	let filteredPosts: Post[] = sortedPosts;
+	let filteredPosts: PostForList[] = sortedPosts;
 
 	if (tags.length > 0) {
 		filteredPosts = filteredPosts.filter(
@@ -63,7 +62,7 @@ onMount(async () => {
 			acc[year].push(post);
 			return acc;
 		},
-		{} as Record<number, Post[]>,
+		{} as Record<number, PostForList[]>,
 	);
 
 	const groupedPostsArray = Object.keys(grouped).map((yearStr) => ({
